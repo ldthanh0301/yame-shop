@@ -1,11 +1,24 @@
 <?php 
     require_once './auth/auth.php';
-
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 2) {
+        header( 'HTTP/1.0 403 Forbidden', TRUE, 403 );
+        die();
+    }
+?>
+<?php
     require_once '../database/database.php';
-    
-    $db = Database::getInstance();
-    $con = $db->connectDB;
-    $result = $con->query('select * from hanghoa')->fetch_all(MYSQLI_ASSOC);
+    require_once '../models/Product.php';   
+    $Product = new Product();
+    // lấy danh sách sản phẩm
+    $products = $Product->getProducts();
+    // xóa sản phẩm
+    if ($_SERVER["REQUEST_METHOD"] ==="POST" && $_POST["deleteId"]) {
+        $id = $_POST["deleteId"];
+
+        if( $Product->delete($id)) {
+            $products = $Product->getProducts();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +56,7 @@
                     <tbody>
                         <?php
                             $i=1;
-                            foreach($result as $product) {
+                            foreach($products as $product) {
                                 echo "<tr>
                                     <td>{$i}</td>
                                     <td>{$product['TenHH']}</td>
@@ -52,7 +65,7 @@
                                     <td>{$product['SoLuongHang']}</td>
                                     <td>
                                         <a href='./edit-product.php?id={$product['MSHH']}' class='btn btn-primary btn-sm' >Chỉnh sửa</a>
-                                        <button onclick=deleteProduct($product[MSHH]) class='btn btn-danger btn-sm'>Xóa</button>
+                                        <button onclick=deleteProduct('$product[MSHH]') class='btn btn-danger btn-sm'>Xóa</button>
                                     </td>
                                 </tr>";
                                 $i++;
@@ -68,7 +81,7 @@
         <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <!-- form xóa xác nhận xóa sản phẩm -->
-            <form action="./delete-product.php" method="post" id="formConfirmDelete" class="modal-content">
+            <form action="" method="post" id="formConfirmDelete" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

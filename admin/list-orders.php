@@ -1,7 +1,7 @@
 <?php 
     require_once './auth/auth.php';
     
-    require_once './models/Order.php';
+    require_once '../models/Order.php';
     $Order = new Order();
     $orders = $Order->getOrders();
     if(isset($_GET['status'])) {
@@ -18,10 +18,7 @@
             $orders = $Order->getTypeOrder(0);
         }
     }
-    $countPending = count($Order->getTypeOrder(0));
-    $countApproved = count($Order->getTypeOrder(1));
-    $countDelivering = count($Order->getTypeOrder(2));
-    $countDelivered = count($Order->getTypeOrder(3));
+    $countStatus = $Order->countOrders();
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,25 +48,25 @@
                         <div class="col col-3">
                             <a href='?status=0' class="dashboard-top__info">
                                 <div>Chờ duyệt</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countPending?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countStatus[0]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href='?status=1' class="dashboard-top__info">
                                 <div>Đã duyệt</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countApproved?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countStatus[1]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href="?status=2" class="dashboard-top__info">
                                 <div>Đang giao</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countDelivering?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countStatus[2]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href="?status=2" class="dashboard-top__info">
                                 <div>Đã giao</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countDelivered?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countStatus[3]?></span>
 
                             </a>
                         </div>

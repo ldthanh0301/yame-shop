@@ -1,7 +1,12 @@
 <?php 
     require_once './auth/auth.php';
-
-    require_once './models/Staff.php';
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 3) {
+        header( 'HTTP/1.0 403 Forbidden', TRUE, 403 );
+        die();
+    }
+?>
+<?php
+    require_once '../models/Staff.php';
     $Staff = new Staff();
     $staffs = $Staff->getStaffs();
     if(isset($_GET['status'])) {
@@ -17,10 +22,7 @@
             $staffs = $Staff->getStaffs();
         }
     }
-    $countShipper = count($Staff->getTypeStaff(0));
-    $countCensor = count($Staff->getTypeStaff(1));
-    $countManager = count($Staff->getTypeStaff(2));
-    $countAdmin = count($Staff->getTypeStaff(3));
+    $countPosition =$Staff->countStaffs();
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,25 +52,25 @@
                         <div class="col col-3">
                             <a href='?status=0' class="dashboard-top__info">
                                 <div>Giao Hàng</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countShipper?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countPosition[0]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href='?status=1' class="dashboard-top__info">
                                 <div>Kiểm duyệt</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countCensor?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countPosition[1]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href="?status=2" class="dashboard-top__info">
                                 <div>Quản lý</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countManager?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countPosition[2]?></span>
                             </a>
                         </div>
                         <div class="col col-3">
                             <a href="?status=2" class="dashboard-top__info">
                                 <div>Quản trị</div>
-                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countAdmin?></span>
+                                <span style="font-size:1.2rem;color:var(--clr-success)"><?php echo $countPosition[3]?></span>
 
                             </a>
                         </div>

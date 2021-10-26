@@ -7,7 +7,7 @@
 
 
 <?php
-require_once __DIR__ ."/../../database/database.php";
+require_once  __DIR__ . "/../database/database.php";
 class Order
 {
   private $con ;
@@ -49,6 +49,18 @@ class Order
         $query = "SELECT * FROM `dathang`as dh  join `chitietdathang` as cdh join `khachhang` as kh on dh.SoDonDH = cdh.SoDonDH and kh.MSKH = dh.MSKH where TrangThaiDH = $type";
         $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
         return $result;
+    }
+    public function countOrders() {
+      $query = "SELECT COUNT(*)as counter FROM `dathang`  GROUP BY TrangThaiDH ";
+      $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
+      $counter = array();
+      foreach($result as $count) {
+        $counter[] = $count['counter'];
+      } 
+      if (empty($counter)){
+        $counter=[0,0,0,0];
+      }
+      return $counter;
     }
 }
   

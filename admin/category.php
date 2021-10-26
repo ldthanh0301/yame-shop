@@ -1,5 +1,11 @@
 <?php
     require_once '../database/database.php';
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 2) {
+        header("Location: ./404.php");
+        die();
+    }
+?>
+<?php
     require_once './controller/upload.php';
 
     $db = Database::getInstance();

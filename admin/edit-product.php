@@ -1,21 +1,27 @@
 <?php
     require_once './auth/auth.php';
-
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 2) {
+        header("Location: ./404.php");
+        die();
+    }
+?>
+<?php
     require_once '../database/database.php';
     require_once './controller/upload.php';
+    require_once '../models/Product.php';
+    $Product = new Product();
+
     $db = Database::getInstance();
     $con = $db->connectDB;
     //lấy loại hàng hóa
     $result = $con->query('select * from loaihanghoa');
     $categorys =$result->fetch_all(MYSQLI_ASSOC);
+
     //check id để lấy thông tin sản phẩm 
     if ($_GET) {
         $id = $_GET['id'];
-       $query = "select * from hanghoa where hanghoa.MSHH ={$id}";
-       $product  = $con->query($query)->fetch_assoc();
-       
-       $query = "select * from hinhhanghoa where hinhhanghoa.MSHH ={$id}";
-       $imagesStored  = $con->query($query)->fetch_all(MYSQLI_ASSOC);
+        $product  = $Product->detail($id);
+        $imagesStored  = $Product->getImages($id);
     }
     // xử lý submit form edit product
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -26,26 +32,24 @@
         $quantity = $_POST['quantity'];
 
 
-        $query = "update  `hanghoa` set `TenHH` ='{$name}', `MoTa` = '{$info}', `Gia` ={$price}, `SoLuongHang`={$quantity}, `MaLoaiHang` ={$category} where MSHH = {$id}";
         $isSuccess = true;
-        
-
-        $result = $con->query($query);
+        $result = $Product->update($id,$name,$info,$price,$quantity,$category);
         
         //file chứa danh sách ảnh upload
         $images = $_FILES['images'];
 
         if (!$result ) {
+            echo $result;
             $isSuccess = false;
         }else {
             if (!empty($images)){
-
-                $MSHH = $id;
                 // xóa ảnh củ hiện tại
-                $query = "Delete from hinhhanghoa where MSHH = $MSHH";
+                $query = "Delete from hinhhanghoa where MSHH = '$id'";
                 $con->query($query);
+                $isSuccess = $Product->deleteImages($id);
                 // cập nhật ảnh mới
-                $isSuccess = uploadImages($con,  $images,$MSHH,'../products-img/');
+                $isSuccess = $Product->uploadImages($id,$images,'../products-img/');
+                $imagesStored  = $Product->getImages($id);
             }
             
         }

@@ -1,15 +1,21 @@
 <?php
     require_once './auth/auth.php';
-    require_once '../database/database.php';
-    require_once './controller/upload.php';
 
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 2) {
+        header("Location: ./404.php");
+        die();
+    }
+?>
+<?php
+    require_once '../database/database.php';
+    require_once '../models/Product.php';
+    
     $db = Database::getInstance();
     $con = $db->connectDB;
     //lấy loai hàng hóa
     $result = $con->query('select * from loaihanghoa');
     $categorys =$result->fetch_all(MYSQLI_ASSOC);
  
-
     // xử lý submit form add product
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $name = $_POST['name'];
@@ -17,22 +23,18 @@
         $category = $_POST['category'];
         $info = $_POST['info'];
         $quantity = $_POST['quantity'];
-        $query = "INSERT INTO `hanghoa`(`TenHH`, `MoTa`, `Gia`, `SoLuongHang`, `MaLoaiHang`) VALUES ('{$name}', '{$info}', {$price},{$quantity},{$category});";
         $isSuccess = true;
         
-        $result = $con->query($query);
+        $Product = new Product();
+        $MSHH = $Product->insert($name, $info, $price, $quantity, $category);
         
         //file chứa danh sách ảnh upload
         $images = $_FILES['images'];
 
-        if (!$result) {
+        if (!$MSHH) {
             $isSuccess = false;
         }else {
-
-            $MSHH = $con->insert_id;
-           
-            $isSuccess = uploadImages($con,  $images,$MSHH,'../products-img/');
-            
+            $isSuccess = $Product->uploadImages($MSHH,$images,'../products-img/');
         }
 
     }

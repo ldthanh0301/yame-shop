@@ -19,7 +19,7 @@
             $imgID = uniqid('image'); 
             
             $imageName = $imgID. '.' . $ext;
-            $query = "INSERT INTO `hinhhanghoa`(`MSHH`, `TenHinh`) VALUES ($MSHH,'$imageName')";
+            $query = "INSERT INTO `hinhhanghoa`(`MSHH`, `TenHinh`) VALUES ('$MSHH','$imageName')";
             $result = $con->query($query); 
             if (!$result) {
 

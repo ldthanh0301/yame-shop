@@ -1,7 +1,12 @@
 <?php
     require_once './auth/auth.php';
-
-    require_once './models/Staff.php';
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 3) {
+        header("Location: ./404.php");
+        die();
+    }
+?>
+<?php
+    require_once '../models/Staff.php';
     $Staff = new Staff();
     if (isset($_GET['id'])) {
         $id = $_GET['id'];

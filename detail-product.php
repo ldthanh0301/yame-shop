@@ -59,7 +59,7 @@
                             <hr>
                             <div class="product-info__control">
                                 <button class="btn btn-secondary">Thêm vào giỏ hàng</button>
-                                <a href="./payment.php?id=<?php echo $product['MSHH']?>" class="btn btn-primary">Mua ngay</a>
+                                <a href="./order.php?id=<?php echo $product['MSHH']?>" class="btn btn-primary">Mua ngay</a>
                             </div>
                         </div>
                     </div>

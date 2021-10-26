@@ -2,7 +2,7 @@
     ob_start();
     session_start();
     
-    require_once './models/Staff.php';
+    require_once '../models/Staff.php';
     $msg ='';
 
     if ($_SERVER['REQUEST_METHOD'] =='POST' && !empty($_POST['username']) 

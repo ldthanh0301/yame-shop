@@ -1,9 +1,13 @@
 <?php
     require_once './auth/auth.php';
-
-    require_once './models/Staff.php';
+    if (!isset($_SESSION['role']) || $_SESSION['role'] < 3) {
+        header("Location: ./404.php");
+        die();
+    }
+    require_once '../models/Staff.php';
     $Staff = new Staff();
-
+?>
+<?php
     if($_SERVER['REQUEST_METHOD'] ==="POST") {
         $fullname = $_POST['fullname'];
         $address = $_POST['address'];

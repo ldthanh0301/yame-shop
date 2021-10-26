@@ -1,7 +1,8 @@
 <?php
     require_once './auth/auth.php';
-
-    require_once './models/Order.php';
+?>
+<?php
+    require_once '../models/Order.php';
     $Order = new Order();
     $orders = $Order->getOrders();
     if(isset($_GET['status'])) {
