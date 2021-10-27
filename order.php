@@ -1,13 +1,18 @@
 <?php 
-    require_once './database/database.php';
-    $db = Database::getInstance();
-    $con = $db->connectDB;
+    require_once './models/Product.php';
+    require_once './models/Customer.php';
+    require_once './models/Order.php';
+    $Product = new Product();
+    $Customer = new Customer();
+    $Order = new Order();
+
     if($_GET['id']) {
-        $id=$_GET['id'];
-        $product = getProduct ($id, $con);
+        $id = $_GET['id'];
+        $product =$Product->detail($id);
+        $images = $Product->getImages($id);
     }
     if($_SERVER['REQUEST_METHOD'] ==='POST') {
-        $isSuccess = true;
+        $msg = 'Đặt hàng thành công';
         $MSHH= $_POST['MSHH'];
         $fullname= $_POST['fullname'];
         $address= $_POST['address'];
@@ -16,43 +21,28 @@
         $quantity = $_POST['quantity'];
         $total = $_POST['total'];
 
-        // thêm khách hàng
-        $query = "INSERT INTO `khachhang`(`HoTenKH`, `SoDienThoai`, `Email`) VALUES ('$fullname','$phoneNumber','$email')";
-        $result = $con->query($query);
-        if (!$result) {
-            $isSuccess= false;
+        $MSKH = $Customer->insert($fullname,$email, $address,$phoneNumber);
+
+        if (!$MSKH) {
+            $isSuccess= 'Lỗi khi thêm khách hàng';
         }else {
-            $MSKH = $con->insert_id;
-
-            $query = "INSERT INTO `diachikh`(`DiaChi`, `MSKH`) VALUES ('$address',$MSKH)";
-            $result = $con->query($query);
-
-            // thêm vào bảng đơn hàng
-            $query = "INSERT INTO `dathang`(`MSKH`) VALUES ($MSKH)";
-            $result = $con->query($query);
-            $SoDH = $con->insert_id;
-
+            $SoDH = $Order->insertOrder($MSKH);
             // thêm vào bảng chi tiết đơn hàng
-            $query = "INSERT INTO `chitietdathang`(`SoDonDH`,`MSHH`,`SoLuong`,`GiaDatHang`) VALUES ($SoDH, $MSHH, $quantity,$total)";
-            $result = $con->query($query);
+            if (!$SoDH) {
+                $msg = 'Lỗi khi thêm đơn hàng';
+            }
+            else {
+                $result = $Order->insertDetailOrder($SoDH,$MSHH,$quantity,$total);
 
-            // thêm vào bảng chi tiết đơn hàng
-            if(!$result ) {
-                $isSuccess = false;
-            } 
-
+                if(!$result ) {
+                    $msg = 'Lỗi khi thêm chi tiết đơn hàng';
+                } 
+            }
         }
         // lấy chi tiết sản phẩm
-        $product = getProduct($id, $con);
-        
+        $product =$Product->detail($MSHH);
+        $images = $Product->getImages($MSHH);
     }
-    function getProduct ($id, $con) {
-        //lấy loai hàng hóa
-        $result = $con->query("SELECT * FROM `hanghoa`as hh JOIN hinhhanghoa as hhh ON hh.MSHH = hhh.MSHH where hh.MSHH = $id");// 
-        $product =$result->fetch_assoc();
-        return $product;
-    }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,11 +67,8 @@
         <div class="container">
             <form method="POST" action="" id="payment">
                     <?php 
-                        if (isset($isSuccess) && !$isSuccess) {
-                            echo '<h6 class="notify--danger">Lỗi khi đặt hàng!!!!</h6>';
-                        }
-                        if (isset($isSuccess) && $isSuccess) {
-                            echo '<h6 class="notify--success">Đặt hàng thành công!!!!</h6>';
+                        if (isset($msg)) {
+                            echo "<h6 class='notify--success'>$msg</h6>";
                         }
                     ?>
                 <div class="row">
@@ -95,7 +82,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img style='width:100px' src="./products-img/<?php echo $product['TenHinh']?>" alt="Ảnh review">
+                                        <img style='width:100px' src="./products-img/<?php echo $images[0]['TenHinh']?>" alt="Ảnh review">
                                     </div>    
                                     <div class="col-6">
                                         <span><?php echo $product["TenHH"]?></span>

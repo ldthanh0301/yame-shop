@@ -56,17 +56,27 @@ body {
     color: white;
     border: none;
 }
+.btn.btn-success { 
+    background-color: var(--clr-success);
+    color: white;
+    border: none;
+}
+.btn.btn-white { 
+    background-color: var(--clr-white);
+    color: black;
+    border: 1px rgba(0, 0, 0, 0.4) solid;
+}
 
-.btn.btn-primary:not(:disabled):not(.disabled):active {
+.btn:not(:disabled):not(.disabled):active {
     background-color: black;
     color: white;
 }
 
-.btn.btn-primary:not(:disabled):not(.disabled):focus {
+.btn:not(:disabled):not(.disabled):focus {
     box-shadow: rgba(0, 0, 0, 0.4) 1px 2px 4px;
 }
 
-.btn.btn-primary:not(:disabled):not(.disabled):hover {
+.btn:not(:disabled):not(.disabled):hover {
     box-shadow: rgba(0, 0, 0, 0.5) 2px 4px 4px;
 }
 

@@ -23,6 +23,12 @@ class Customer
 
   public function detail($id) {
     $query = "SELECT * FROM `KhachHang` where MSKH = '$id'";
+    $result = $this->con->query($query)->fetch_assoc();
+    return $result; 
+  }
+  public function getAddresses($id)
+  {
+    $query = "SELECT * FROM `DiaChiKH` where MSKH = '$id'";
     $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
     return $result; 
   }
@@ -66,13 +72,13 @@ class Customer
     return $result->fetch_assoc(); 
   }
 
-  public function update($id, $fullname, $address,$phoneNumber) {
-      $query = "update `KhachHang` set `HoTenKH` = '$fullname', `SoDienThoai` = '$phoneNumber' where MSKH = '$id'";
+  public function update($id, $fullname, $address,$phoneNumber, $email) {
+      $query = "update `KhachHang` set `HoTenKH` = '$fullname', `SoDienThoai` = '$phoneNumber', `Email`= '$email' where MSKH = '$id'";
       $result = $this->con->query($query);
       if (!$result) {
         return 0;
       }
-      $query = "update `diachi` set `DiaCHi` = '$address' where MSKH = '$id')";
+      $query = "update `diachikh` set `DiaChi` = '$address' where MSKH = '$id'";
       $result = $this->con->query($query);
       return $result;
   }

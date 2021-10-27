@@ -19,6 +19,7 @@
         }
     }
     $countStatus = $Order->countOrders();
+    
 ?> 
 <!DOCTYPE html>
 <html lang="en">
