@@ -48,7 +48,11 @@
                                     </a>
                                     <div class="product-card__option">
                                         <span class="product-card__price"><?php echo $product['Gia'] ?></span>
+<<<<<<< HEAD
                                         <a href="#"><button class="btn btn-sm btn-danger">Thêm vào giỏ</button></a>
+=======
+                                        <a href="#"><button class="btn btn-sm btn-primary">Thêm vào giỏ</button></a>
+>>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
                                     </div>
                                 </div>
                             </div>

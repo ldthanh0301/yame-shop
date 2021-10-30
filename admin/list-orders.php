@@ -22,11 +22,16 @@
             $countDelivered = count($Order->getTypeOrder(3));
         }
     }
+<<<<<<< HEAD
     // $countStatus = $Order->countOrders();
     $countPending = count($Order->getTypeOrder(0));
     $countApproved = count($Order->getTypeOrder(1));
     $countDelivering = count($Order->getTypeOrder(2));
     $countDelivered = count($Order->getTypeOrder(3));
+=======
+    $countStatus = $Order->countOrders();
+    
+>>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
 ?> 
 <!DOCTYPE html>
 <html lang="en">

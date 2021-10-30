@@ -78,11 +78,14 @@
                 <button class="btn btn-danger" type="reset">Hủy</button>
                 <button class="btn btn-primary" type="submit">Đăng nhập</button>
             </div>
+<<<<<<< HEAD
             <hr>
             <div>
                 <span>Bạn chưa có tài khoản?</span>
                 <a href="./register.php">Đăng ký ngay</a>
             </div>
+=======
+>>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
         </form>
     </div>
     <!-- Boostrap Script -->
