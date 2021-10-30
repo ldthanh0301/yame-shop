@@ -1,0 +1,8 @@
+--1. Tính tổng tiền
+--2. Thanh toán nhiều sản phẩm
+--3. Tạo giỏ hàng
+--4. validate
+--5. Thêm nhân viên xác nhận đặt hàng
+--6. Thêm ngày giao hàng
+--7. Làm chức năng search
+--8. Tạo link liên kết với navbar

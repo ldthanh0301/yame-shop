@@ -1,12 +1,10 @@
 <?php 
     if($_GET['id']) {
-        require_once './database/database.php';
-        $id =$_GET['id'];
-        $db = Database::getInstance();
-        $con = $db->connectDB;
-        //lấy loai hàng hóa
-        $result = $con->query("SELECT * FROM `hanghoa`as hh JOIN hinhhanghoa as hhh ON hh.MSHH = hhh.MSHH where hh.MSHH = $id");// 
-        $product =$result->fetch_assoc();
+        require_once './models/Product.php';
+        $id = $_GET['id'];
+        $Product = new Product();
+        $product =$Product->detail($id);
+        $images = $Product->getImages($id);
     }
 ?>
 <!DOCTYPE html>
@@ -33,7 +31,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="product-review">
-                            <img class="img-fluid" src="./products-img/<?php echo $product['TenHinh']?>" alt="Ảnh review">
+                            <img class="img-fluid" src="./products-img/<?php echo $images[0]['TenHinh']?>" alt="Ảnh review">
                         </div>
                     </div>
                     <div class="col-6">
@@ -59,10 +57,37 @@
                             <hr>
                             <div class="product-info__control">
                                 <button class="btn btn-secondary">Thêm vào giỏ hàng</button>
-                                <a href="./order.php?id=<?php echo $product['MSHH']?>" class="btn btn-primary">Mua ngay</a>
+                                <button onclick="confirmOrder('<?php echo $product['MSHH']?>')" class="btn btn-primary">Mua ngay</button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="modal fade" style='z-index:100000' id="confirmOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                        <!-- form xóa xác nhận xóa sản phẩm -->
+                        <form action="" method="POST" id="formConfirm" class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Đặt hàng</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                                <div class="modal-body">
+                                   Tạo tài khoảng để  thuận tiện hơn cho viêc mua hàng.
+                                </div>
+                                <div class="modal-footer" style="place-content: space-between;">
+                                    <div>
+                                        <a href="./register.php" class="btn btn-white">Đăng ký</a>
+                                        <a href="./login.php" class="btn btn-success">Đăng nhập</a>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                                        <a href="./order.php?id=<?php echo $product['MSHH']?>"class="btn btn-primary">Mua ngay</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                 </div>
             </div>
         </main>
@@ -73,5 +98,18 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        var formConfirm = document.getElementById('formConfirm');
+        function confirmOrder(id) {
+            console.log(id);
+            $('#confirmOrder').modal({
+                show:true
+            })
+            formConfirm.onsubmit = function(e) {
+                let deleteId = e.target.elements.deleteId;
+                deleteId.value = id
+            };
+        }
+    </script>
 </body>
 </html>

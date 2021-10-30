@@ -14,8 +14,8 @@
     // xóa sản phẩm
     if ($_SERVER["REQUEST_METHOD"] ==="POST" && $_POST["deleteId"]) {
         $id = $_POST["deleteId"];
-
-        if( $Product->delete($id)) {
+        $result = $Product->delete($id);
+        if($result) {
             $products = $Product->getProducts();
         }
     }

@@ -28,40 +28,56 @@ class Order
     return $result;
   }
   
-//   public function addOrder($SoDonDH) {
-//     $query = "SELECT * FROM `dathang`as dh  join `chitietdathang` as cdh join `khachhang` as kh on dh.SoDonDH = cdh.SoDonDH and kh.MSKH = dh.MSKH where dh.SoDonDH = $SoDonDH";
-//     $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
-//     return $result;
-//   }
+  public function insertOrder($MSKH,$MSNV=null) {
+    if ($MSNV==null) {
+      $query = "INSERT INTO `dathang`(`MSKH`) VALUES ('$MSKH')";
+    }else {
+      $query = "INSERT INTO `dathang`(`MSKH`,`MSNV`) VALUES ('$MSKH', '$MSNV')";
+    }
+    
+    $result = $this->con->query($query);
+    if (!$result) {
+      return 0;
+    }
+    $SoDonDH = $this->con->insert_id;
+    return $SoDonDH;
+  }
+  public function insertDetailOrder($SoDH, $MSHH, $quantity,$total,$soDC)
+  {
+    $query = "INSERT INTO `chitietdathang`(`SoDonDH`,`MSHH`,`SoLuong`,`GiaDatHang`,`MaDC`) VALUES ($SoDH, '$MSHH', $quantity,$total,$soDC)";
+    
+    $result = $this->con->query($query);
+    return $result;
+  }
   
-    public function update($id,$status) {
-        $query = "update `dathang` set `TrangThaiDH` = $status where SoDonDH = $id";
-        $result = $this->con->query($query);
-        return $result;
-    }
+  public function update($id,$status) {
+      $query = "update `dathang` set `TrangThaiDH` = $status where SoDonDH = $id";
+      $result = $this->con->query($query);
+      return $result;
+  }
 
-    public function delete($id) {
-        $query = "delete from `dathang` where SoDonDH = $id";
-        $result = $this->con->query($query);
-        return $result;
-    }
-    public function getTypeOrder($type) {
-        $query = "SELECT * FROM `dathang`as dh  join `chitietdathang` as cdh join `khachhang` as kh on dh.SoDonDH = cdh.SoDonDH and kh.MSKH = dh.MSKH where TrangThaiDH = $type";
-        $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
-        return $result;
-    }
-    public function countOrders() {
-      $query = "SELECT COUNT(*)as counter FROM `dathang`  GROUP BY TrangThaiDH ";
+  public function delete($id) {
+      $query = "delete from `dathang` where SoDonDH = $id";
+      $result = $this->con->query($query);
+      return $result;
+  }
+  public function getTypeOrder($type) {
+      $query = "SELECT * FROM `dathang`as dh  join `chitietdathang` as cdh join `khachhang` as kh on dh.SoDonDH = cdh.SoDonDH and kh.MSKH = dh.MSKH where TrangThaiDH = $type";
       $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
-      $counter = array();
-      foreach($result as $count) {
-        $counter[] = $count['counter'];
-      } 
-      if (empty($counter)){
-        $counter=[0,0,0,0];
-      }
-      return $counter;
+      return $result;
+  }
+  public function countOrders() {
+    $query = "SELECT COUNT(*)as counter FROM `dathang`  GROUP BY TrangThaiDH ";
+    $result = $this->con->query($query)->fetch_all(MYSQLI_ASSOC);
+    $counter = array();
+    foreach($result as $count) {
+      $counter[] = $count['counter'];
+    } 
+    if (empty($counter)){
+      $counter=[0,0,0,0];
     }
+    return $counter;
+  }
 }
   
 ?>

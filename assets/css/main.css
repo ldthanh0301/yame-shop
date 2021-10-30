@@ -109,6 +109,8 @@
 }
 .header-option__item__link {
     color: #868995;
+    background: transparent;
+    border: none;
 }
 .header-option__item__link:hover {
     color: var(--clr-red);

@@ -4,10 +4,10 @@
         header("Location: ./404.php");
         die();
     }
+    ?>
+<?php
     require_once '../models/Staff.php';
     $Staff = new Staff();
-?>
-<?php
     if($_SERVER['REQUEST_METHOD'] ==="POST") {
         $fullname = $_POST['fullname'];
         $address = $_POST['address'];

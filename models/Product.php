@@ -68,8 +68,20 @@ class Product
             return $result->fetch_all(MYSQLI_ASSOC);
         }
         public function deleteImages($id) {
+            $status= true;
+            $linkImages = $this->getImages($id);
             $query = "delete from `hinhhanghoa` where MSHH = '$id'";
             $result = $this->con->query($query);
+            if (!$status) {
+                return 0;
+            }
+            foreach ($linkImages as $link) {
+                $path = __DIR__.'/../products-img/'.$link['TenHinh'];
+                if(!unlink($path)) {
+                    $status = false;
+                    break;
+                } 
+            }
             return $result;
         }
         public function update($id,$name,$info,$price,$quantity,$category) {
@@ -79,6 +91,10 @@ class Product
         }
 
         public function delete($id) {
+            $result = $this->deleteImages($id);
+            if (!$result) {
+                return 0;
+            }
             $query = "delete from `hanghoa` where MSHH = '$id'";
             $result = $this->con->query($query);
             return $result;
