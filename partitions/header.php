@@ -98,17 +98,10 @@
                                 <li class="dropdown header-option__item">
                                     <button class="header-option__item__link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="header-option__item__icon far fa-user"></i>
-<<<<<<< HEAD
                                         <span><?php if(isset($_SESSION['HoTenKH'])) echo $_SESSION['HoTenKH'];?></span>
                                     </button>
                                     <div class="dropdown-menu" style="transform: translate3d(-30px, 40px, 0px)" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="./edit-profile.php">Thông tin tài khoản</a>
-=======
-                                        <span><?php if(isset($_SESSION['username'])) echo $_SESSION['HoTenKH'];?></span>
-                                    </button>
-                                    <div class="dropdown-menu" style="transform: translate3d(-30px, 40px, 0px)" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Thông tin tài khoản</a>
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
                                         <hr>
                                         <?php
                                             if(isset($_SESSION['username'])) {
