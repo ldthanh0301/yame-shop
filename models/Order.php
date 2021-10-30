@@ -42,16 +42,10 @@ class Order
     $SoDonDH = $this->con->insert_id;
     return $SoDonDH;
   }
-<<<<<<< HEAD
   public function insertDetailOrder($SoDH, $MSHH, $quantity,$total,$soDC)
   {
     $query = "INSERT INTO `chitietdathang`(`SoDonDH`,`MSHH`,`SoLuong`,`GiaDatHang`,`MaDC`) VALUES ($SoDH, '$MSHH', $quantity,$total,$soDC)";
     
-=======
-  public function insertDetailOrder($SoDH, $MSHH, $quantity,$total)
-  {
-    $query = "INSERT INTO `chitietdathang`(`SoDonDH`,`MSHH`,`SoLuong`,`GiaDatHang`) VALUES ($SoDH, '$MSHH', $quantity,$total)";
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
     $result = $this->con->query($query);
     return $result;
   }
