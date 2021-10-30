@@ -1,15 +1,11 @@
 <?php 
-<<<<<<< HEAD
     session_start();
-=======
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
     require_once './models/Product.php';
     require_once './models/Customer.php';
     require_once './models/Order.php';
     $Product = new Product();
     $Customer = new Customer();
     $Order = new Order();
-<<<<<<< HEAD
     // Khi đăng nhập
     if (isset($_SESSION['MSKH'])) {
         $MSKH =$_SESSION['MSKH'];
@@ -53,22 +49,14 @@
             }
         }
     }
-=======
-
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
     if($_GET['id']) {
         $id = $_GET['id'];
         $product =$Product->detail($id);
         $images = $Product->getImages($id);
-<<<<<<< HEAD
         
     }
     // chưa đăng nhập
     if($_SERVER['REQUEST_METHOD'] ==='POST' && !isset($_SESSION['MSKH'])) {
-=======
-    }
-    if($_SERVER['REQUEST_METHOD'] ==='POST') {
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
         $msg = 'Đặt hàng thành công';
         $MSHH= $_POST['MSHH'];
         $fullname= $_POST['fullname'];
@@ -81,7 +69,6 @@
         $MSKH = $Customer->insert($fullname,$email, $address,$phoneNumber);
 
         if (!$MSKH) {
-<<<<<<< HEAD
             $msg= 'Lỗi khi thêm khách hàng';
         }else {
             // insert diachi
@@ -102,21 +89,6 @@
                         $msg = 'Lỗi khi thêm chi tiết đơn hàng';
                     } 
                 }
-=======
-            $isSuccess= 'Lỗi khi thêm khách hàng';
-        }else {
-            $SoDH = $Order->insertOrder($MSKH);
-            // thêm vào bảng chi tiết đơn hàng
-            if (!$SoDH) {
-                $msg = 'Lỗi khi thêm đơn hàng';
-            }
-            else {
-                $result = $Order->insertDetailOrder($SoDH,$MSHH,$quantity,$total);
-
-                if(!$result ) {
-                    $msg = 'Lỗi khi thêm chi tiết đơn hàng';
-                } 
->>>>>>> e6522df5b5963eacc43e0f91763124a339d7be04
             }
         }
         // lấy chi tiết sản phẩm
